@@ -39,9 +39,9 @@ int main(int argc, char** argv)
     double mappedForce[3] = { 0, 0, 0 };
     double velRef_Robot[3] = { 0, 0, 0 };
     double virtual_vel_saturate[3] = {2, 2, 2};
-    double virtual_vel_deadzoe[3] = {0.1, 0.1, 0.1};
+    double virtual_vel_deadzoe[3] = {0, 0, 0};
     double innertia[3] = {1,1,1};
-    double damping[3] ={1,1,1};
+    double damping[3] ={0.5,0.5,0.5};
 
     double dT = 0;
     bool ret = true;
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
     while (ros::ok()) {
         ros::Time start_ros_time = ros::Time::now();
         dT = robot_time.timeLoop();
-
+        ROS_INFO("DT IS %lf", dT);
         if (!sensorAcquisition.forceRead(arduino_sensorAcquisition))
         {
            ROS_WARN("Force Read Error ! - Skip this loop");
@@ -109,6 +109,7 @@ int main(int argc, char** argv)
         // Message Publishing
         geometry_msgs::Twist drive_cmd;
         drive_cmd.linear.x = velRef_Robot[0];
+        drive_cmd.linear.y = -velRef_Robot[1];
         drive_cmd.angular.z = velRef_Robot[2];
         cmd_vel_pub.publish(drive_cmd);
 

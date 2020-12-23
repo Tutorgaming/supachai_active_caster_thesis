@@ -228,13 +228,13 @@ namespace ACTIVECASTER {
 			*(_mappedForce + 2) = ((double)read_force[2] + (double)read_force[1]) * 0.4 / scale;
 			*(_mappedForce + 1) = (((double)read_force[3] - (double)read_force[0]) / (2.0 * scale)) + 0.26 * *(_mappedForce + 2);
 
-			for (int i = 0; i < 3; i++) {
+			//for (int i = 0; i < 3; i++) {
 
-				if (*(_mappedForce + i) < deadZone[i]) {
-					*(_mappedForce + i) = 0.0;
-				}
+			//	if (*(_mappedForce + i) < deadZone[i]) {
+			//		*(_mappedForce + i) = 0.0;
+			//	}
 
-			}
+			//}
 
 		}
 
@@ -293,23 +293,23 @@ namespace ACTIVECASTER {
 
 			for (int i = 0; i < 3; i++) {
 
-				_velRef_Robot[0] = (_dT * (_mappedForce[i] - (damping[i] * _velRef_Robot[i])) / innertia[i]) + _velRef_Robot[i];
+				_velRef_Robot[i] = (_dT * (_mappedForce[i] - (damping[i] * _velRef_Robot[i])) / innertia[i]) + _velRef_Robot[i];
 				output_mag[i] = abs(_velRef_Robot[i]);
 
-				if (output_mag[i] > saturate[i]) {
+				// if (output_mag[i] > saturate[i]) {
 
-					_velRef_Robot[i] = saturate[i] * _velRef_Robot[i] / output_mag[i];
+				// 	_velRef_Robot[i] = saturate[i] * _velRef_Robot[i] / output_mag[i];
 
-				}
+				// }
 
-				else if (output_mag < deadZone) {
+				// else if (output_mag < deadZone) {
 
-					_velRef_Robot[i] = 0.0;
+				// 	_velRef_Robot[i] = 0.0;
 
-				}
+				// }
 
-				else {
-				}
+				// else {
+				// }
 
 			}
 
