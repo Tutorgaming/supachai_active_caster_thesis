@@ -4,7 +4,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#else   
+#else
 #include <unistd.h>
 #endif
 
@@ -114,12 +114,17 @@ namespace ACTIVECASTER {
 		bool isOpen(serial::Serial& _arduino_sensorAcquisition) {
 
 			request = request_isOpen;
+			cout << "Write Data ->>" << request <<"" << endl;
+
 			return_byte = _arduino_sensorAcquisition.write(&request, bytesend);
 			return_byte = _arduino_sensorAcquisition.read(&serialBuffer, byteread);
 			counter = 0;
 			while (serialBuffer != ACK_start) {
 				cout << "missing starting signal" << endl;
+				return_byte = _arduino_sensorAcquisition.write(&request, bytesend);
+				cout << "Write Data ->>" << request <<"" << endl;
 				return_byte = _arduino_sensorAcquisition.read(&serialBuffer, byteread);
+				cout << "Read" << return_byte <<" Byte" << endl;
 				counter++;
 				if (counter > 10) {
 					cout << "missing starting signal" << endl;
@@ -145,16 +150,17 @@ namespace ACTIVECASTER {
 		}
 
 		bool force_calibration(serial::Serial& _arduino_sensorAcquisition) {
-
+			std::cout << "Force Calibration _Serial" << std::endl;
 			request = request_calibration;
 			return_byte = _arduino_sensorAcquisition.write(&request, bytesend);
+			cout << "Write " << return_byte <<" Byte" << endl;
 			return_byte = _arduino_sensorAcquisition.read(&serialBuffer, byteread);
 			counter = 0;
 			while (serialBuffer != ACK_start) {
 				cout << "missing starting signal" << endl;
 				return_byte = _arduino_sensorAcquisition.read(&serialBuffer, byteread);
 				counter++;
-				if (counter > 10) {
+				if (counter > 20) {
 					cout << "missing starting signal" << endl;
 					return false;
 				}
@@ -274,7 +280,7 @@ namespace ACTIVECASTER {
 	class VIRTUALADMITTANCE {
 
 	private:
-		
+
 		double innertia[3] = { 1.0, 1.0, 1.0 };
 		double damping[3] = { 1.0, 1.0, 1.0 };
 		double output_mag[3] = { 0.0, 0.0, 0.0 };
@@ -334,9 +340,9 @@ namespace ACTIVECASTER {
 			}
 
 		}
-		
+
 		void setVirtualAdmittanceParam(double *_innertia, double* _damping ) {
-			
+
 			for (int i = 0; i < 3; i++) {
 				innertia[i] = _innertia[i];
 				damping[i] = _damping[i];

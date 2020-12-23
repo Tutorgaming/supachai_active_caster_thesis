@@ -135,7 +135,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/apt_handle_node.cpp)
-add_executable(apt_handle_node src/main.cpp)
+add_executable(apt_handle_node src/main.cpp include/apt_handle/activecaster.h)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
